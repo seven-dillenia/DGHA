@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dgha/misc/data.dart';
 import 'package:dgha/misc/helper.dart';
 import 'package:dgha/models/place.dart';
@@ -71,5 +73,17 @@ class PlaceService {
     } else {
       return SearchPlace(places: List<PlaceData>(), nextPageToken: ''); 
     } 
+  }
+
+  static Future<PlaceData> getPlaceRatingById(String placeId) async {
+    String url = "${Data.rootTestingUrl}/location/placeId/$placeId";
+    http.Response res = await http.get(url, headers: {"Accept": "application/json"});
+
+    if(res.statusCode == 200) {
+      Map<String, dynamic> decodeJson = jsonDecode(res.body); 
+      return PlaceData.fromJson(decodeJson); 
+    }
+
+    return null; 
   }
 }

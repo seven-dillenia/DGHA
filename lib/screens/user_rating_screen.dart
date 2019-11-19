@@ -156,13 +156,14 @@ class _UserRatingScreenState extends State<UserRatingScreen> {
         }
       },
     );
-    //----------Comment Section
+    //---------- NOTE: Comment Section
     commentSectionScreen = new CommentSection(
       title: "Comment (Optional)",
       controller: commentController,
       hintText:
           "Add a comment to your review to give more detail on your experience. This is optional.",
       btnColor: isLoading ? Styles.grey : Styles.midnightBlue,
+      // --------- NOTE: Submission
       onPressed: () async {
         setState(() {
           this.isLoading = true;
@@ -185,8 +186,13 @@ class _UserRatingScreenState extends State<UserRatingScreen> {
             customerServiceRating.toInt(),
             comment,
           ).then((response) {
+
+            // new review is added
             if (response.statusCode == 201) {
-              Navigator.of(context).pop(true);
+
+              // send back the Place Details Screen if user has left a comment
+              // true = user have left a comment
+              Navigator.pop(context, comment != "" ? true : false); 
               setState(() {
                 this.isLoading = false;
                 this.showLoadingText = false;
