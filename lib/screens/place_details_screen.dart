@@ -45,7 +45,6 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
   void initState() {
     super.initState();
 
-    // only run getReviews() if the place has ratings
     if (widget.placeData.numOfWrittenReviews > 0) {
       getReviews();
     }
@@ -68,7 +67,6 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     });
 
     try {
-      // check if it is 6 because that means there will be more reviews to come
       if (this.reviewList.length != widget.placeData.numOfWrittenReviews) {
         setState(() {
           this.databaseHasMoreReviews = true;
@@ -142,16 +140,8 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
         }
 
         types.add(word);
-
-        // types += "${word.trim()}, ";
       }
     }
-
-    // //Remove end comma and whitespace
-    // if (types != "") {
-    //   types = types.trim();
-    //   types = types.substring(0, types.length - 1);
-    // }
 
     return types;
   }
