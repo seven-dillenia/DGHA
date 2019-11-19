@@ -41,15 +41,14 @@ class PlaceService {
 
   static Future<List<PlaceData>> getRecommendedPlaces() async {
     // this only works with a physical device
-    final String state = await getState();
-    // final String state = "Victoria";
+    // final String state = await getState();
+    final String state = "Victoria";
 
     if (state != null) {
       String url = '${Data.rootTestingUrl}/location/recommend?state=$state';
       http.Response res = await http.get(url, headers: {"Accept": "application/json"});
 
       if (res.statusCode == 200) {
-        print("something");
         return PlaceData.decodePlaceDataList(res.body);
       }
     }

@@ -371,7 +371,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                       ))
                   .toList(),
             );
-          } else if (widget.placeData.numOfAllReviews > 0 && this.isFirstLoad) {
+          } else if (widget.placeData.numOfWrittenReviews > 0 && this.isFirstLoad) {
             return Column(
               children: <Widget>[
                 Container(

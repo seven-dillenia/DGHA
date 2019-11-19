@@ -21,10 +21,12 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   // ------------------------- NOTE: Variables
   SearchPlace searchPlace = new SearchPlace(places: List<PlaceData>(), nextPageToken: '');
+  String prevInput;
   String input;
   bool isLoading = false;
   bool isFirstLoad = true;
 
+  // add the page index to the Data.pages
   @override
   void initState() {
     super.initState();
@@ -51,9 +53,9 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  // remove the page index of the Data.pages
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     if (Data.pages.last == PageNav.searchScr) {
       Data.pages.removeLast();
@@ -125,14 +127,17 @@ class _SearchScreenState extends State<SearchScreen> {
           Navigator.pop(context);
         },
         onSubmit: (value) {
-          // empty out values for the new place
-          setState(() {
-            this.input = value;
-            this.searchPlace.places.clear();
-            this.searchPlace.nextPageToken = '';
-          });
+          // only run this if the user can entered a new value
+          if (this.prevInput != value) {
+            setState(() {
+              this.input = value;
+              this.prevInput = value;
+              this.searchPlace.places.clear();
+              this.searchPlace.nextPageToken = '';
+            });
 
-          this._search();
+            this._search();
+          }
         },
         changeFocusColour: false,
       ),
