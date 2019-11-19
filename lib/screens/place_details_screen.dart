@@ -121,6 +121,8 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
           this.setNum = 0; 
         });
         refreshPlaceData(); 
+      } else {
+        getRatingById(); 
       }
     } else {
       Navigator.of(context).pushNamed(
