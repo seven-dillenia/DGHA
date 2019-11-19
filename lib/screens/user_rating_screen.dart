@@ -7,6 +7,14 @@ import 'package:dgha/models/place.dart';
 import 'package:dgha/screens/place_details_screen.dart';
 import 'package:flutter/material.dart';
 
+enum RatingPagesEnum {
+  Overall,
+  CustomerService,
+  Amenities,
+  Location,
+  Comment,
+}
+
 class UserRatingScreen extends StatefulWidget {
   static const String id = "Rating Screen";
 
@@ -19,6 +27,7 @@ class UserRatingScreen extends StatefulWidget {
 
 class _UserRatingScreenState extends State<UserRatingScreen> {
   bool isSubmittingReview = false;
+  RatingPagesEnum currentRatingPage = RatingPagesEnum.Overall;
 
   int maxNavPos = 0;
   int currentNavPos = 0;
@@ -62,17 +71,21 @@ class _UserRatingScreenState extends State<UserRatingScreen> {
     overallRatingScreen = new UserRatingContainer(
       title: "Overall",
       buttonTitle: "Next",
-      hintText: "Give an overall rating out of 5 on your experience at this location.",
+      hintText:
+          "Give an overall rating out of 5 on your experience at this location.",
       //If the page already has a rating, grab that from the object
       rating: overallRatingScreen != null ? overallRatingScreen.rating : 0,
+      nextPageName: "Customer Service rating",
       onPressed: () {
         if (overallRatingScreen.rating != 0) {
           setState(() {
             if (maxNavPos < 1) maxNavPos = 1;
             currentNavPos = 1;
+
+            overallRating = overallRatingScreen.rating;
+            currentRatingPage = RatingPagesEnum.CustomerService;
           });
-          overallRating = overallRatingScreen.rating;
-          pageController.jumpToPage(1);
+          //pageController.jumpToPage(1);
         }
       },
     );
@@ -80,17 +93,23 @@ class _UserRatingScreenState extends State<UserRatingScreen> {
     customerServiceRatingScreen = new UserRatingContainer(
       title: "Customer Service",
       buttonTitle: "Next",
-      hintText: "Give a score out of 5 on the customer service provided to you at this location.",
+      hintText:
+          "Give a score out of 5 on the customer service provided to you at this location.",
       //If the page already has a rating, grab that from the object
-      rating: customerServiceRatingScreen != null ? customerServiceRatingScreen.rating : 0,
+      rating: customerServiceRatingScreen != null
+          ? customerServiceRatingScreen.rating
+          : 0,
+      nextPageName: "Amenities rating",
       onPressed: () {
         if (customerServiceRatingScreen.rating != 0) {
           setState(() {
             if (maxNavPos < 2) maxNavPos = 2;
             currentNavPos = 2;
+
+            customerServiceRating = customerServiceRatingScreen.rating;
+            currentRatingPage = RatingPagesEnum.Amenities;
           });
-          customerServiceRating = customerServiceRatingScreen.rating;
-          pageController.jumpToPage(2);
+          //pageController.jumpToPage(2);
         }
       },
     );
@@ -101,15 +120,17 @@ class _UserRatingScreenState extends State<UserRatingScreen> {
       hintText: "Give a score out of 5 on the amenities here at this location.",
       //If the page already has a rating, grab that from the object
       rating: amenitiesRatingScreen != null ? amenitiesRatingScreen.rating : 0,
-
+      nextPageName: "Location rating",
       onPressed: () {
         if (amenitiesRatingScreen.rating != 0) {
           setState(() {
             if (maxNavPos < 3) maxNavPos = 3;
             currentNavPos = 3;
+
+            amenitiesRating = amenitiesRatingScreen.rating;
+            currentRatingPage = RatingPagesEnum.Location;
           });
-          amenitiesRating = amenitiesRatingScreen.rating;
-          pageController.jumpToPage(3);
+          //pageController.jumpToPage(3);
         }
       },
     );
@@ -117,17 +138,21 @@ class _UserRatingScreenState extends State<UserRatingScreen> {
     locationRatingScreen = new UserRatingContainer(
       title: "Location",
       buttonTitle: "Next",
-      hintText: "Give a score out of 5 on the accessibility and ease of access to this location.",
+      hintText:
+          "Give a score out of 5 on the accessibility and ease of access to this location.",
       //If the page already has a rating, grab that from the object
       rating: locationRatingScreen != null ? locationRatingScreen.rating : 0,
+      nextPageName: "Comment",
       onPressed: () {
         if (locationRatingScreen.rating != 0) {
           setState(() {
             if (maxNavPos < 4) maxNavPos = 4;
             currentNavPos = 4;
+
+            locationRating = locationRatingScreen.rating;
+            currentRatingPage = RatingPagesEnum.Comment;
           });
-          locationRating = locationRatingScreen.rating;
-          pageController.jumpToPage(4);
+          //pageController.jumpToPage(4);
         }
       },
     );
@@ -135,7 +160,8 @@ class _UserRatingScreenState extends State<UserRatingScreen> {
     commentSectionScreen = new CommentSection(
       title: "Comment (Optional)",
       controller: commentController,
-      hintText: "Add a comment to your review to give more detail on your experience. This is optional.",
+      hintText:
+          "Add a comment to your review to give more detail on your experience. This is optional.",
       btnColor: isLoading ? Styles.grey : Styles.midnightBlue,
       onPressed: () async {
         setState(() {
@@ -206,69 +232,103 @@ class _UserRatingScreenState extends State<UserRatingScreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: <Widget>[
-                  //----------App Bar
-                  Align(
-          alignment: Alignment.centerLeft,
-          child: GestureDetector(
-          child: Semantics(
-            button: true,
-            label: "Close",
-            hint: "Double tap to cancel your review",
-            excludeSemantics: true,
-            child: DghaIcon(
-              size: 35,
-              padding: 4,
-              backgroundColor: Styles.midnightBlue,
-              iconColor: Styles.yellow,
-              icon: Icons.close,
-            ),
-          ),
-          onTap: () {
-            Navigator.pop(context, false);
-          },
-          ),
+        child: Container(
+          child: ListView(
+            children: <Widget>[
+              //----------App Bar
+              Align(
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  child: Semantics(
+                    button: true,
+                    label: "Close",
+                    hint: "Double tap to cancel your review",
+                    excludeSemantics: true,
+                    child: DghaIcon(
+                      size: 35,
+                      padding: 4,
+                      backgroundColor: Styles.midnightBlue,
+                      iconColor: Styles.yellow,
+                      icon: Icons.close,
+                    ),
                   ),
-                  //----------Loading Text
-                  buildLoadingWidget(),
-                  //----------Page Navigation
-                  Padding(
-          padding: const EdgeInsets.only(left: 15, right: 15, top: 20, bottom: 20),
-          child: RatingBreadcrumbs(
-          maxNavPos: maxNavPos,
-          currentNavPos: currentNavPos,
-          iconColor: Colors.white,
-          backgroundColor: Styles.grey,
-          highlightedIconColor: Styles.yellow,
-          highlightedBackgroundColor: Styles.midnightBlue,
-          controller: pageController,
-          ),
-                  ),
-
-                  //-------------------------- NOTE: PAGES
-                  Expanded(
-          child: PageView(
-          controller: pageController,
-          physics: NeverScrollableScrollPhysics(),
-          children: <Widget>[
-            overallRatingScreen,
-            customerServiceRatingScreen,
-            amenitiesRatingScreen,
-            locationRatingScreen,
-            commentSectionScreen,
-          ],
-          ),
-                  ),
-                  SizedBox(
-          height: (MediaQuery.of(context).size.height - 230) / 2,
-                  ),
-                ],
+                  onTap: () {
+                    Navigator.pop(context, false);
+                  },
+                ),
               ),
-            ),
+              //----------Loading Text
+              buildLoadingWidget(),
+              //----------Page Navigation
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 15, right: 15, top: 20, bottom: 20),
+                child: RatingBreadcrumbs(
+                  maxNavPos: maxNavPos,
+                  currentNavPos: currentNavPos,
+                  iconColor: Colors.white,
+                  backgroundColor: Styles.grey,
+                  highlightedIconColor: Styles.yellow,
+                  highlightedBackgroundColor: Styles.midnightBlue,
+                  onTapFirst: () {
+                    setState(() {
+                      currentRatingPage = RatingPagesEnum.Overall;
+                      currentNavPos = 0;
+                    });
+                  },
+                  onTapSecond: () {
+                    setState(() {
+                      currentRatingPage = RatingPagesEnum.CustomerService;
+                      currentNavPos = 1;
+                    });
+                  },
+                  onTapThird: () {
+                    setState(() {
+                      currentRatingPage = RatingPagesEnum.Amenities;
+                      currentNavPos = 2;
+                    });
+                  },
+                  onTapForth: () {
+                    setState(() {
+                      currentRatingPage = RatingPagesEnum.Location;
+                      currentNavPos = 3;
+                    });
+                  },
+                  onTapFith: () {
+                    setState(() {
+                      currentRatingPage = RatingPagesEnum.Comment;
+                      currentNavPos = 4;
+                    });
+                  },
+                ),
+              ),
+
+              //-------------------------- NOTE: PAGES
+              currentRatingPage == RatingPagesEnum.Overall
+                  ? overallRatingScreen
+                  : currentRatingPage == RatingPagesEnum.CustomerService
+                      ? customerServiceRatingScreen
+                      : currentRatingPage == RatingPagesEnum.Amenities
+                          ? amenitiesRatingScreen
+                          : currentRatingPage == RatingPagesEnum.Location
+                              ? locationRatingScreen
+                              : currentRatingPage == RatingPagesEnum.Comment
+                                  ? commentSectionScreen
+                                  : Container(height: 0),
+
+              // PageView(
+              //   controller: pageController,
+              //   physics: NeverScrollableScrollPhysics(),
+              //   children: <Widget>[
+              //     overallRatingScreen,
+              //     customerServiceRatingScreen,
+              //     amenitiesRatingScreen,
+              //     locationRatingScreen,
+              //     commentSectionScreen,
+              //   ],
+              // ),
+            ],
+          ),
         ),
       ),
     );

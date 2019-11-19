@@ -11,7 +11,11 @@ class RatingBreadcrumbs extends StatefulWidget {
   final Color backgroundColor;
   final Color highlightedIconColor;
   final Color highlightedBackgroundColor;
-  final PageController controller;
+  final Function onTapFirst;
+  final Function onTapSecond;
+  final Function onTapThird;
+  final Function onTapForth;
+  final Function onTapFith;
 
   RatingBreadcrumbs({
     this.maxNavPos,
@@ -20,7 +24,11 @@ class RatingBreadcrumbs extends StatefulWidget {
     this.iconColor,
     this.highlightedIconColor,
     this.highlightedBackgroundColor,
-    this.controller,
+    this.onTapFirst,
+    this.onTapSecond,
+    this.onTapThird,
+    this.onTapForth,
+    this.onTapFith,
   });
   @override
   _RatingBreadcrumbsState createState() => _RatingBreadcrumbsState();
@@ -71,14 +79,7 @@ class _RatingBreadcrumbsState extends State<RatingBreadcrumbs> {
                           ? widget.highlightedIconColor
                           : widget.iconColor,
                     ),
-                    onTap: widget.maxNavPos >= 0
-                        ? () {
-                            setState(() {
-                              widget.currentNavPos = 0;
-                            });
-                            widget.controller.jumpToPage(0);
-                          }
-                        : null,
+                    onTap: widget.maxNavPos >= 0 ? widget.onTapFirst : null,
                   ),
                 ),
                 //----------Customer Service
@@ -101,14 +102,7 @@ class _RatingBreadcrumbsState extends State<RatingBreadcrumbs> {
                           ? widget.highlightedIconColor
                           : widget.iconColor,
                     ),
-                    onTap: widget.maxNavPos >= 1
-                        ? () {
-                            setState(() {
-                              widget.currentNavPos = 1;
-                            });
-                            widget.controller.jumpToPage(1);
-                          }
-                        : null,
+                    onTap: widget.maxNavPos >= 1 ? widget.onTapSecond : null,
                   ),
                 ),
                 //----------Amenities
@@ -131,14 +125,7 @@ class _RatingBreadcrumbsState extends State<RatingBreadcrumbs> {
                           ? widget.highlightedIconColor
                           : widget.iconColor,
                     ),
-                    onTap: widget.maxNavPos >= 2
-                        ? () {
-                            setState(() {
-                              widget.currentNavPos = 2;
-                            });
-                            widget.controller.jumpToPage(2);
-                          }
-                        : null,
+                    onTap: widget.maxNavPos >= 2 ? widget.onTapThird : null,
                   ),
                 ),
                 //----------Location
@@ -161,14 +148,7 @@ class _RatingBreadcrumbsState extends State<RatingBreadcrumbs> {
                           ? widget.highlightedIconColor
                           : widget.iconColor,
                     ),
-                    onTap: widget.maxNavPos >= 3
-                        ? () {
-                            setState(() {
-                              widget.currentNavPos = 3;
-                            });
-                            widget.controller.jumpToPage(3);
-                          }
-                        : null,
+                    onTap: widget.maxNavPos >= 3 ? widget.onTapForth : null,
                   ),
                 ),
                 //----------Comment
@@ -191,14 +171,7 @@ class _RatingBreadcrumbsState extends State<RatingBreadcrumbs> {
                           ? widget.highlightedIconColor
                           : widget.iconColor,
                     ),
-                    onTap: widget.maxNavPos >= 4
-                        ? () {
-                            setState(() {
-                              widget.currentNavPos = 4;
-                            });
-                            widget.controller.jumpToPage(4);
-                          }
-                        : null,
+                    onTap: widget.maxNavPos >= 4 ? widget.onTapFith : null,
                   ),
                 ),
               ],

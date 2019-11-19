@@ -49,7 +49,6 @@ class _DghaStarRatingState extends State<DghaStarRating> {
                   //---------- Star Rating
                   GestureDetector(
                     child: Semantics(
-                      label: widget.changeRatingOnTap ? "Star" : "",
                       hint: widget.changeRatingOnTap
                           ? "Double tap to rate ${index + 1} stars"
                           : "",

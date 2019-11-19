@@ -10,6 +10,7 @@ class UserRatingContainer extends StatefulWidget {
   final String buttonTitle;
   final Function onPressed;
   final String hintText;
+  final String nextPageName;
   double rating;
 
   UserRatingContainer({
@@ -17,6 +18,7 @@ class UserRatingContainer extends StatefulWidget {
     this.buttonTitle = "Next",
     this.onPressed,
     this.rating = 0,
+    this.nextPageName,
     this.hintText = "",
   });
 
@@ -25,60 +27,6 @@ class UserRatingContainer extends StatefulWidget {
 }
 
 class _UserRatingContainerState extends State<UserRatingContainer> {
-  // Lee: Can't get out of dialog box when using screen reader.
-  //Popup dialog box
-  // Future<String> createAlertDialog(BuildContext context) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         content: Text(
-  //           widget.hintText,
-  //           style: Styles.pStyle,
-  //         ),
-  //         actions: <Widget>[
-  //           Semantics(
-  //             button: true,
-  //             label: "Close button",
-  //             hint: "Double tap to close the hint pop up",
-  //             excludeSemantics: true,
-  //             child: GestureDetector(
-  //               child: Container(
-  //                 width: 100,
-  //                 padding: EdgeInsets.symmetric(vertical: 10),
-  //                 decoration: BoxDecoration(
-  //                   color: Styles.midnightBlue,
-  //                   borderRadius: BorderRadius.all(Radius.circular(50)),
-  //                   boxShadow: [
-  //                     BoxShadow(
-  //                       color: Styles.grey,
-  //                       blurRadius: 3,
-  //                       offset: Offset(2, 3),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 child: Text(
-  //                   "Close",
-  //                   textAlign: TextAlign.center,
-  //                   style: TextStyle(
-  //                     color: Styles.yellow,
-  //                     fontFamily: "Poppins",
-  //                     fontWeight: FontWeight.w700,
-  //                     fontSize: 20,
-  //                   ),
-  //                 ),
-  //               ),
-  //               onTap: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Semantics(
@@ -99,29 +47,6 @@ class _UserRatingContainerState extends State<UserRatingContainer> {
               SizedBox(
                 width: 15,
               ),
-              //---------- NOTE: More Info
-              // Container(
-              //   height: 50,
-              //   child: Semantics(
-              //     button: true,
-              //     label: "Hint button",
-              //     hint: "Double tap to open the hint pop up",
-              //     excludeSemantics: true,
-              //     child: GestureDetector(
-              //       child: DghaIcon(
-              //         icon: FontAwesomeIcons.question,
-              //         iconColor: Styles.yellow,
-              //         backgroundColor: Styles.midnightBlue,
-              //         size: 30,
-              //         padding: 6,
-              //         paddingPadding: 4,
-              //       ),
-              //       onTap: () {
-              //         createAlertDialog(context);
-              //       },
-              //     ),
-              //   ),
-              // ),
             ],
           ),
           Column(
@@ -145,7 +70,7 @@ class _UserRatingContainerState extends State<UserRatingContainer> {
                 onTap: widget.onPressed,
                 child: Semantics(
                   label: "Next",
-                  hint: "Double tap to go to the next page",
+                  hint: "Double tap to go to the ${widget.nextPageName} page",
                   excludeSemantics: true,
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.5,
@@ -197,59 +122,6 @@ class CommentSection extends StatefulWidget {
 }
 
 class _CommentSectionState extends State<CommentSection> {
-  //Popup dialog box
-  // Future<String> createAlertDialog(BuildContext context) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         content: Text(
-  //           widget.hintText,
-  //           style: Styles.pStyle,
-  //         ),
-  //         actions: <Widget>[
-  //           Semantics(
-  //             button: true,
-  //             label: "Close button",
-  //             hint: "Double tap to close the hint pop up",
-  //             excludeSemantics: true,
-  //             child: GestureDetector(
-  //               child: Container(
-  //                 width: 100,
-  //                 padding: EdgeInsets.symmetric(vertical: 10),
-  //                 decoration: BoxDecoration(
-  //                   color: Styles.midnightBlue,
-  //                   borderRadius: BorderRadius.all(Radius.circular(50)),
-  //                   boxShadow: [
-  //                     BoxShadow(
-  //                       color: Styles.grey,
-  //                       blurRadius: 3,
-  //                       offset: Offset(2, 3),
-  //                     ),
-  //                   ],
-  //                 ),
-  //                 child: Text(
-  //                   "Close",
-  //                   textAlign: TextAlign.center,
-  //                   style: TextStyle(
-  //                     color: Styles.yellow,
-  //                     fontFamily: "Poppins",
-  //                     fontWeight: FontWeight.w700,
-  //                     fontSize: 20,
-  //                   ),
-  //                 ),
-  //               ),
-  //               onTap: () {
-  //                 Navigator.of(context).pop();
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     Color color = widget.btnColor;
@@ -273,29 +145,6 @@ class _CommentSectionState extends State<CommentSection> {
                     SizedBox(
                       width: 15,
                     ),
-                    //----------More Info
-                    // Container(
-                    //   height: 50,
-                    //   child: Semantics(
-                    //     button: true,
-                    //     label: "Hint button",
-                    //     hint: "Double tap to open the hint pop up",
-                    //     excludeSemantics: true,
-                    //     child: GestureDetector(
-                    //       child: DghaIcon(
-                    //         icon: FontAwesomeIcons.question,
-                    //         iconColor: Styles.yellow,
-                    //         backgroundColor: Styles.midnightBlue,
-                    //         size: 30,
-                    //         padding: 6,
-                    //         paddingPadding: 4,
-                    //       ),
-                    //       onTap: () {
-                    //         createAlertDialog(context);
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
                   ],
                 ),
                 SizedBox(

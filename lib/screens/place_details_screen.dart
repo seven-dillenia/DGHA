@@ -59,7 +59,8 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
       this.isLoading = true;
     });
 
-    List<ReviewData> _reviewList = await ReviewService.getReviewSetById(widget.placeData.placeId, this.setNum);
+    List<ReviewData> _reviewList = await ReviewService.getReviewSetById(
+        widget.placeData.placeId, this.setNum);
 
     setState(() {
       this.reviewList.addAll(_reviewList);
@@ -91,7 +92,8 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     if (DghaApi.currentClient != null) {
       print(DghaApi.currentClient.credentials.expiration);
       print(DghaApi.currentClient.credentials.isExpired);
-      final result = await Navigator.pushNamed(context, UserRatingScreen.id, arguments: widget.placeData);
+      final result = await Navigator.pushNamed(context, UserRatingScreen.id,
+          arguments: widget.placeData);
       if (result) {
         getReviews();
       }
@@ -105,14 +107,17 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
 
   void reportBtnHandler() {
     if (DghaApi.currentClient != null) {
-      Navigator.pushNamed(context, ReportScreen.id, arguments: widget.placeData);
+      Navigator.pushNamed(context, ReportScreen.id,
+          arguments: widget.placeData);
     } else {
-      Navigator.of(context).pushNamed(LoginScreen.id_report, arguments: widget.placeData);
+      Navigator.of(context)
+          .pushNamed(LoginScreen.id_report, arguments: widget.placeData);
     }
   }
 
   void _launchMap(String placeId) async {
-    final url = 'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=$placeId';
+    final url =
+        'https://www.google.com/maps/search/?api=1&query=Google&query_place_id=$placeId';
 
     if (await canLaunch(url)) {
       await launch(url);
@@ -177,10 +182,14 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                   SizedBox(height: Styles.heightFromAppBar),
 
                   // ---------------- NOTE: Place Name
-                  Container(child: Text(widget.placeData.name, style: Styles.h2Style)),
+                  Container(
+                      child:
+                          Text(widget.placeData.name, style: Styles.h2Style)),
 
                   // ---------------- NOTE: Address
-                  Container(child: Text(widget.placeData.address, style: Styles.pStyle)),
+                  Container(
+                      child:
+                          Text(widget.placeData.address, style: Styles.pStyle)),
 
                   SizedBox(height: Styles.spacing * 0.5),
 
@@ -190,7 +199,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                       if (this.getTypes().length > 0) {
                         return Container(
                           child: Wrap(
-                            runSpacing: Styles.spacing * 0.5,
+                              runSpacing: Styles.spacing * 0.5,
                               spacing: Styles.spacing * 0.5,
                               children: this
                                   .getTypes()
@@ -209,10 +218,22 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                   SizedBox(height: Styles.spacing * 0.5),
 
                   // -------------------------------- NOTE: Stars
-                  buildStar(rating: widget.placeData.avgOverallRating, ratingLabel: 'Overall Rating', isBigStar: true),
-                  buildStar(rating: widget.placeData.avgCustomerRating, ratingLabel: 'Service Rating', isBigStar: false),
-                  buildStar(rating: widget.placeData.avgAmentitiesRating, ratingLabel: 'Amenities Rating', isBigStar: false),
-                  buildStar(rating: widget.placeData.avgLocationRating, ratingLabel: 'Location Rating', isBigStar: false),
+                  buildStar(
+                      rating: widget.placeData.avgOverallRating,
+                      ratingLabel: 'Overall Rating',
+                      isBigStar: true),
+                  buildStar(
+                      rating: widget.placeData.avgCustomerRating,
+                      ratingLabel: 'Service Rating',
+                      isBigStar: false),
+                  buildStar(
+                      rating: widget.placeData.avgAmentitiesRating,
+                      ratingLabel: 'Amenities Rating',
+                      isBigStar: false),
+                  buildStar(
+                      rating: widget.placeData.avgLocationRating,
+                      ratingLabel: 'Location Rating',
+                      isBigStar: false),
 
                   // ---------------- NOTE: Review Heading Row
                   Semantics(
@@ -230,7 +251,11 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                     onTap: this.getReviews,
                     bottomPadding: Styles.spacing,
                   ),
-                  PlaceDetailBtnText(text: "Report Venue", onTap: this.reportBtnHandler),
+                  PlaceDetailBtnText(
+                    text: "Report Venue",
+                    onTap: this.reportBtnHandler,
+                    semanticsHint: "Double tap to report ${widget.placeData.name} to D G H A",
+                  ),
                   SizedBox(height: Styles.spacing),
                 ],
               ),
@@ -315,7 +340,9 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     return Semantics(
       label: "$ratingLabel: $ratingStr stars",
       child: Center(
-        child: isBigStar ? buildBigStar(rating) : buildSmallStar(rating, ratingLabel),
+        child: isBigStar
+            ? buildBigStar(rating)
+            : buildSmallStar(rating, ratingLabel),
       ),
     );
   }
@@ -327,20 +354,20 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-      DghaStarRating(
-        changeRatingOnTap: false,
-        rating: rating,
-        height: 42,
-      ),
-      SizedBox(
-        width: Styles.spacing * 0.25,
-      ),
-      YellowTagHighlight(
-        text: widget.placeData.numOfAllReviews.toString(),
-        textStyle: Styles.boldPStyle,
-        size: 30,
-        verticalPadding: 2,
-      )
+          DghaStarRating(
+            changeRatingOnTap: false,
+            rating: rating,
+            height: 42,
+          ),
+          SizedBox(
+            width: Styles.spacing * 0.25,
+          ),
+          YellowTagHighlight(
+            text: widget.placeData.numOfAllReviews.toString(),
+            textStyle: Styles.boldPStyle,
+            size: 30,
+            verticalPadding: 2,
+          )
         ],
       ),
     );
@@ -407,6 +434,8 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
       text: "Write the first review!",
       onTap: this.reviewBtnHandler,
       bottomPadding: Styles.spacing,
+      semanticsHint:
+          "Double tap to leave the first review for ${widget.placeData.name}",
     );
   }
 }
@@ -415,8 +444,14 @@ class PlaceDetailBtnText extends StatelessWidget {
   final String text;
   final Function onTap;
   final double bottomPadding;
+  final String semanticsHint;
 
-  PlaceDetailBtnText({@required this.text, @required this.onTap, this.bottomPadding = 0});
+  PlaceDetailBtnText({
+    @required this.text,
+    @required this.onTap,
+    this.bottomPadding = 0,
+    this.semanticsHint,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -432,14 +467,19 @@ class PlaceDetailBtnText extends StatelessWidget {
           SizedBox(
             height: Styles.spacing,
           ),
-          DghaTextButton(
-            minWidth: MediaQuery.of(context).size.width * 0.45,
-            text: text,
-            textStyle: Styles.yellowTxtBtnStyle,
-            colour: Styles.midnightBlue,
-            onTap: () {
-              onTap();
-            },
+          Semantics(
+            button: true,
+            label: text,
+            hint: semanticsHint,
+            child: DghaTextButton(
+              minWidth: MediaQuery.of(context).size.width * 0.45,
+              text: text,
+              textStyle: Styles.yellowTxtBtnStyle,
+              colour: Styles.midnightBlue,
+              onTap: () {
+                onTap();
+              },
+            ),
           ),
         ],
       ),
