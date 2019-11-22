@@ -32,7 +32,7 @@ class PlaceData {
         name: json["name"],
         address: json["address"],
         state: json["state"],
-        types: List<String>.from(json["types"].map((x) => x)),
+        types: json["types"] != null ? List<String>.from(json["types"].map((x) => x)) : null,
         avgOverallRating: json["avgOverallRating"].toDouble(),
         avgCustomerRating: json["avgCustomerRating"].toDouble(),
         avgAmentitiesRating: json["avgAmentitiesRating"].toDouble(),

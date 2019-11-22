@@ -107,7 +107,7 @@ class _UserRatingContainerState extends State<UserRatingContainer> {
   }
 }
 
-// --------------------------- NOTE: Comment
+// --------------------------- NOTE: Comment Widget
 class CommentSection extends StatefulWidget {
   final String title;
   final Function onPressed;
@@ -177,7 +177,7 @@ class _CommentSectionState extends State<CommentSection> {
                 SizedBox(
                   height: 15,
                 ),
-                //----------Submit Button
+                //---------- NOTE: Submit Button
                 GestureDetector(
                   onTap: widget.onPressed,
                   child: Semantics(

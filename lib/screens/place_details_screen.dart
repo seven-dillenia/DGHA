@@ -15,6 +15,7 @@ import 'package:dgha/models/place.dart';
 import 'package:dgha/screens/login_screen.dart';
 import 'package:dgha/screens/report_screen.dart';
 import 'package:dgha/screens/user_rating_screen.dart';
+import 'package:dgha/services/place_service.dart';
 import 'package:dgha/services/review_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -45,12 +46,17 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
   void initState() {
     super.initState();
 
-    // only run getReviews() if the place has ratings
     if (widget.placeData.numOfWrittenReviews > 0) {
       getReviews();
     }
 
     Data.pages.add(PageNav.placeDetailsScr);
+  }
+
+  // ------------------------- NOTE: Get Refresh PlaceData
+  void refreshPlaceData() async {
+    await getRatingById();
+    getReviews(); 
   }
 
   // ------------------------- NOTE: Get Reviews
@@ -68,7 +74,6 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     });
 
     try {
-      // check if it is 6 because that means there will be more reviews to come
       if (this.reviewList.length != widget.placeData.numOfWrittenReviews) {
         setState(() {
           this.databaseHasMoreReviews = true;
@@ -88,14 +93,36 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
     }
   }
 
-  void reviewBtnHandler() async {
+  // ------------------------- NOTE: Get Rating by ID
+  Future getRatingById() async {
+    PlaceData newPlaceData = await PlaceService.getPlaceRatingById(widget.placeData.placeId);
+
+    if(newPlaceData != null) {
+      setState(() {
+        widget.placeData.numOfWrittenReviews = newPlaceData.numOfWrittenReviews;
+        widget.placeData.numOfAllReviews = newPlaceData.numOfAllReviews;
+        widget.placeData.avgOverallRating = newPlaceData.avgOverallRating;
+        widget.placeData.avgCustomerRating = newPlaceData.avgCustomerRating;
+        widget.placeData.avgAmentitiesRating = newPlaceData.avgAmentitiesRating;
+        widget.placeData.avgLocationRating = newPlaceData.avgLocationRating; 
+      });
+    }
+  }
+
+  // ------------------------- NOTE: Review Handler
+  Future reviewBtnHandler() async {
     if (DghaApi.currentClient != null) {
-      print(DghaApi.currentClient.credentials.expiration);
-      print(DghaApi.currentClient.credentials.isExpired);
-      final result = await Navigator.pushNamed(context, UserRatingScreen.id,
+      var userHasAddedNewReview = await Navigator.pushNamed(context, UserRatingScreen.id,
           arguments: widget.placeData);
-      if (result) {
-        getReviews();
+
+      if (userHasAddedNewReview) {
+        setState(() {
+          this.reviewList.clear(); 
+          this.setNum = 0; 
+        });
+        refreshPlaceData(); 
+      } else {
+        getRatingById(); 
       }
     } else {
       Navigator.of(context).pushNamed(
@@ -131,27 +158,21 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
 
     for (int i = 0; i < widget.placeData.types.length; i++) {
       if (Data.allPlaceTypes.contains(widget.placeData.types[i])) {
+        
         // Replace _ with a space
         String type = widget.placeData.types[i].replaceAll(RegExp('_'), ' ');
         List<String> splitStr = type.split(" ");
 
         String word = "";
         for (int j = 0; j < splitStr.length; j++) {
+          
           //Captitalize first letter
           word += '${splitStr[j][0].toUpperCase()}${splitStr[j].substring(1)} ';
         }
 
         types.add(word);
-
-        // types += "${word.trim()}, ";
       }
     }
-
-    // //Remove end comma and whitespace
-    // if (types != "") {
-    //   types = types.trim();
-    //   types = types.substring(0, types.length - 1);
-    // }
 
     return types;
   }
@@ -273,7 +294,6 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
-                    // Navigator.of(context).popAndPushNamed(ExploreScreen.id);
                   },
                   child: DghaIcon(
                     icon: FontAwesomeIcons.arrowLeft,
@@ -316,8 +336,8 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
 
         // ---------- NOTE: Review Btn
         GestureDetector(
-          onTap: () {
-            reviewBtnHandler();
+          onTap: () async {
+            await reviewBtnHandler();
           },
           child: Semantics(
             label: "Write Review",
