@@ -63,13 +63,19 @@ class DghaApi {
         // Get client from credentials file
         oauth2.Credentials credentials =
             new oauth2.Credentials.fromJson(credString);
-        currentClient =
-            oauth2.Client(credentials, identifier: identifier, secret: secret);
 
-        //TODO: uncomment when credentials refreshing is fixed
-        // await refreshCredentials();
+        if (!credentials.isExpired) {
+          currentClient = oauth2.Client(credentials,
+              identifier: identifier, secret: secret);
 
-        return currentClient;
+          // await refreshCredentials();
+
+          return currentClient;
+        } else {
+          signOut();
+          print("Credentials don't exist");
+          return null;
+        }
       } else {
         print("Credentials don't exist");
         return null;
@@ -91,19 +97,19 @@ class DghaApi {
     }
   }
 
-  static Future<bool> refreshCredentials() async {
-    // Refresh the token if needed
-    print(currentClient.credentials.expiration);
-    if (currentClient.credentials.isExpired) {
-      oauth2.Client client = await currentClient.refreshCredentials();
-      currentClient = client;
+  // Couldn't figure out how to get refreshing working
+  // static Future<bool> refreshCredentials() async {
+  //   print(currentClient.credentials.expiration);
+  //   if (currentClient.credentials.isExpired) {
+  //     oauth2.Client client = await currentClient.refreshCredentials();
+  //     currentClient = client;
 
-      print("Refreshed");
-      return true;
-    } else {
-      return false;
-    }
-  }
+  //     print("Refreshed");
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   static void signOut() async {
     currentClient = null;
@@ -134,7 +140,7 @@ class DghaApi {
 
   static Future<Account> getAccount() async {
     if (currentClient != null) {
-      await refreshCredentials();
+      //await refreshCredentials();
 
       http.Response response = await currentClient.get(
         "$rootUrl/Accounts/${parseJwt(currentClient.credentials.accessToken)['sub']}",
@@ -160,7 +166,7 @@ class DghaApi {
 
   static Future<http.Response> deleteAccount() async {
     if (currentClient != null) {
-      await refreshCredentials();
+      //await refreshCredentials();
 
       http.Response response = await currentClient.delete(
         "$rootUrl/Accounts/${parseJwt(currentClient.credentials.accessToken)['sub']}",
@@ -181,7 +187,7 @@ class DghaApi {
     String newPassword,
   ) async {
     if (currentClient != null) {
-      await refreshCredentials();
+      //await refreshCredentials();
 
       http.Response response = await currentClient.put(
         "$rootUrl/Accounts/${parseJwt(currentClient.credentials.accessToken)['sub']}/UpdatePassword?currentPassword=$currentPassword&newPassword=$newPassword",
@@ -203,7 +209,7 @@ class DghaApi {
     String comment,
   ) async {
     if (currentClient != null) {
-      await refreshCredentials();
+      //await refreshCredentials();
 
       Map<String, dynamic> data = {
         "userID": parseJwt(currentClient.credentials.accessToken)['sub'],
@@ -235,7 +241,7 @@ class DghaApi {
     String comment,
   ) async {
     if (currentClient != null) {
-      await refreshCredentials();
+      //await refreshCredentials();
 
       Map<String, dynamic> data = {
         "userID": parseJwt(currentClient.credentials.accessToken)['sub'],
@@ -418,7 +424,7 @@ class DghaApi {
     String comment,
   ) async {
     if (currentClient != null) {
-      await refreshCredentials();
+      //await refreshCredentials();
 
       Map<String, dynamic> data = {
         "userID": parseJwt(currentClient.credentials.accessToken)['sub'],
@@ -445,7 +451,7 @@ class DghaApi {
 
   static Future<http.Response> deleteReview(String placeId) async {
     if (currentClient != null) {
-      await refreshCredentials();
+      //await refreshCredentials();
 
       http.Response response = await currentClient.delete(
         "$rootUrl/Reviews/$placeId/${parseJwt(currentClient.credentials.accessToken)['sub']}",
