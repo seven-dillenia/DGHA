@@ -11,6 +11,8 @@ A flutter app that allows guide dog owners to rate places according to its acces
 
 [Download Link](http://bit.ly/2DquBRx)
 
+**QR**
+
 ![QR](assets/QR.png)
 
 
