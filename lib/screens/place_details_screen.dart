@@ -56,7 +56,7 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
   // ------------------------- NOTE: Get Refresh PlaceData
   void refreshPlaceData() async {
     await getRatingById();
-    getReviews(); 
+    getReviews();
   }
 
   // ------------------------- NOTE: Get Reviews
@@ -95,16 +95,17 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
 
   // ------------------------- NOTE: Get Rating by ID
   Future getRatingById() async {
-    PlaceData newPlaceData = await PlaceService.getPlaceRatingById(widget.placeData.placeId);
+    PlaceData newPlaceData =
+        await PlaceService.getPlaceRatingById(widget.placeData.placeId);
 
-    if(newPlaceData != null) {
+    if (newPlaceData != null) {
       setState(() {
         widget.placeData.numOfWrittenReviews = newPlaceData.numOfWrittenReviews;
         widget.placeData.numOfAllReviews = newPlaceData.numOfAllReviews;
         widget.placeData.avgOverallRating = newPlaceData.avgOverallRating;
         widget.placeData.avgCustomerRating = newPlaceData.avgCustomerRating;
         widget.placeData.avgAmentitiesRating = newPlaceData.avgAmentitiesRating;
-        widget.placeData.avgLocationRating = newPlaceData.avgLocationRating; 
+        widget.placeData.avgLocationRating = newPlaceData.avgLocationRating;
       });
     }
   }
@@ -112,23 +113,30 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
   // ------------------------- NOTE: Review Handler
   Future reviewBtnHandler() async {
     if (DghaApi.currentClient != null) {
-      var userHasAddedNewReview = await Navigator.pushNamed(context, UserRatingScreen.id,
+      var userHasAddedNewReview = await Navigator.pushNamed(
+          context, UserRatingScreen.id,
           arguments: widget.placeData);
 
       if (userHasAddedNewReview) {
         setState(() {
-          this.reviewList.clear(); 
-          this.setNum = 0; 
+          this.reviewList.clear();
+          this.setNum = 0;
         });
-        refreshPlaceData(); 
+        refreshPlaceData();
       } else {
-        getRatingById(); 
+        getRatingById();
       }
     } else {
-      Navigator.of(context).pushNamed(
+      await Navigator.of(context).pushNamed(
         LoginScreen.id_user_rating,
         arguments: widget.placeData,
       );
+
+      setState(() {
+        this.reviewList.clear();
+        this.setNum = 0;
+      });
+      refreshPlaceData();
     }
   }
 
@@ -158,14 +166,12 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
 
     for (int i = 0; i < widget.placeData.types.length; i++) {
       if (Data.allPlaceTypes.contains(widget.placeData.types[i])) {
-        
         // Replace _ with a space
         String type = widget.placeData.types[i].replaceAll(RegExp('_'), ' ');
         List<String> splitStr = type.split(" ");
 
         String word = "";
         for (int j = 0; j < splitStr.length; j++) {
-          
           //Captitalize first letter
           word += '${splitStr[j][0].toUpperCase()}${splitStr[j].substring(1)} ';
         }
@@ -275,7 +281,8 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                   PlaceDetailBtnText(
                     text: "Report Venue",
                     onTap: this.reportBtnHandler,
-                    semanticsHint: "Double tap to report ${widget.placeData.name} to D G H A",
+                    semanticsHint:
+                        "Double tap to report ${widget.placeData.name} to D G H A",
                   ),
                   SizedBox(height: Styles.spacing),
                 ],
@@ -418,7 +425,8 @@ class _PlaceDetailsScreenState extends State<PlaceDetailsScreen> {
                       ))
                   .toList(),
             );
-          } else if (widget.placeData.numOfWrittenReviews > 0 && this.isFirstLoad) {
+          } else if (widget.placeData.numOfWrittenReviews > 0 &&
+              this.isFirstLoad) {
             return Column(
               children: <Widget>[
                 Container(

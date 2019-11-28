@@ -62,11 +62,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           //Login
           await DghaApi.signIn(email: email, password: passwordV1);
           if (DghaApi.currentClient != null) {
-            await Navigator.of(context).pushNamed(ExploreScreen.id);
-            setState(() {
-              this.isLoading = false;
-              this.showLoadingText = false;
-            });
+            Navigator.of(context).pop();
+            // await Navigator.of(context).pushNamed(ExploreScreen.id);
+            // setState(() {
+            //   this.isLoading = false;
+            //   this.showLoadingText = false;
+            // });
           }
         } else {
           List<dynamic> json = jsonDecode(newUser.body);

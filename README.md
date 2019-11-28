@@ -1,16 +1,41 @@
-# dgha
+# Ruffurees - DGHA App
 
-A new Flutter project.
+A flutter app that allows guide dog owners to rate places according to its accessibility for assistance dogs.
 
-## Getting Started
+## Installation
+### Android
 
-This project is a starting point for a Flutter application.
+#### 1. Download the APK
 
-A few resources to get you started if this is your first Flutter project:
+> Required to be on an android device
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+[Download Link](http://bit.ly/2DquBRx)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![QR](assets/QR.png)
+
+
+#### 2. Select "Click Here to Install"
+![QR](assets/select_install.jpg)
+
+#### 3. Select OK
+![QR](assets/ok.jpg)
+
+#### 4. Select "Install"
+![QR](assets/install.jpg)
+
+#### 5. Select "Install Anyway"
+![QR](assets/install_anyway.jpg)
+
+## iOS
+
+TBA
+
+## Developers
+
+https://github.com/josephkhaipi
+
+https://github.com/leechuyem
+
+https://github.com/Meandmy10
+
+https://github.com/Thornie
