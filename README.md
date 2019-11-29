@@ -28,7 +28,7 @@ A flutter app that allows guide dog owners to rate places according to its acces
 #### 5. Select "Install Anyway"
 ![QR](assets/install_anyway.jpg)
 
-## iOS
+### iOS
 
 TBA
 
@@ -41,3 +41,7 @@ https://github.com/leechuyem
 https://github.com/Meandmy10
 
 https://github.com/Thornie
+
+## Flutter Installation and Set up
+https://flutter.dev/docs/get-started/install
+
